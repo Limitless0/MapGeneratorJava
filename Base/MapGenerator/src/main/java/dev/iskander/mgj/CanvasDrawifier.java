@@ -21,19 +21,25 @@ public class CanvasDrawifier {
 
 	}
 
-	public static void drawPath(GraphicsContext gc, String colourString) {
-		Color color;
+	public static void drawPath(GraphicsContext gc, Color colour) {
 
-		if (colourString.isEmpty()) {
-			color = Color.BLUE;
-		} else {
-			try {
-				color = Color.valueOf(colourString);
-			} catch (RuntimeException runtimeException) {
-				color = Color.RED;
-			}
+		System.out.println(colour);
+
+		gc.setStroke(colour);
+		gc.setFill(colour);
+
+		//TODO implement a way for a random path to be drawn
+
+	}
+
+	private static Color parseColour(String colourString) {
+		Color color;
+		try {
+			color = Color.valueOf(colourString);
+		} catch (RuntimeException runtimeException) {
+			color = Color.RED;
 		}
 
-		System.out.println(color);
+		return color;
 	}
 }

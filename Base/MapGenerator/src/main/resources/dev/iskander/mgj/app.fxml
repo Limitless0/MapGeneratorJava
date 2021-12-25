@@ -41,7 +41,7 @@
          <children>
                   <Canvas fx:id="canvas" height="342.0" width="641.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
             <Button layoutX="314.0" layoutY="372.0" mnemonicParsing="false" onAction="#doTheThing" text="Button" />
-            <TextField fx:id="colourPicker" layoutX="45.0" layoutY="373.0" promptText="Colour Hex Code" />
+            <ColorPicker fx:id="colourPicker" layoutX="80.0" layoutY="373.0" />
          </children>
     </AnchorPane>
     <MenuBar>

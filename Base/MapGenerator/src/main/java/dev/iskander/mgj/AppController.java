@@ -2,7 +2,7 @@ package dev.iskander.mgj;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ColorPicker;
 
 public class AppController {
 
@@ -10,12 +10,12 @@ public class AppController {
 	Canvas canvas;
 
 	@FXML
-	TextField colourPicker;
+	ColorPicker colourPicker;
 
 	@FXML
 	void doTheThing() {
 
-		CanvasDrawifier.drawPath(canvas.getGraphicsContext2D(), colourPicker.getText());
+		CanvasDrawifier.drawPath(canvas.getGraphicsContext2D(), colourPicker.getValue());
 
 	}
 
