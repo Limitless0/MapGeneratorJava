@@ -6,11 +6,13 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 
 
-public class CanvasDrawifier {
+public final class CanvasDrawifier {
 
 	private static final Random random = new Random();
 	private static double width;
 	private static double height;
+
+	private CanvasDrawifier() {} //this class is a static utility class, instances should not be permitted
 
 	public static void drawFlatLayer(GraphicsContext gc, Biomes biome) {
 		setUpGC(gc, biome.COLOUR);
