@@ -142,14 +142,20 @@ public final class CanvasDrawifier {
 
 	private static double moveXCoordinateIntoBounds(double inCoord) {
 		if (inCoord > width) {
-			inCoord = width - 1;
+			inCoord = width;
+		}
+		if (inCoord < 0) {
+			inCoord = 0;
 		}
 		return inCoord;
 	}
 
 	private static double moveYCoordinateIntoBounds(double inCoord) {
 		if (inCoord > height) {
-			inCoord = height - 1;
+			inCoord = height;
+		}
+		if (inCoord < 0) {
+			inCoord = 0;
 		}
 		return inCoord;
 	}
