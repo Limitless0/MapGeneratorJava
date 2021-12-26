@@ -7,6 +7,7 @@ public enum Biomes {
 	GRASSLAND(Color.LIGHTGREEN, 100),
 	DENSE_WOODLAND(Color.DARKGREEN, 100),
 	MOUNTAIN(Color.LIGHTGRAY, 10),
+	WATER(Color.BLUE, 1)
 	;
 
 	final Color COLOUR;

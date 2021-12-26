@@ -29,6 +29,13 @@ public final class CanvasDrawifier {
 		}
 	}
 
+	public static void drawDeliberateLandLayer(GraphicsContext gc, Color colour,
+											   double startX, double startY, double maxSize) {
+		setUpGC(gc, colour);
+		drawLandBiome(gc, startX, startY, maxSize);
+		tearDownGC(gc);
+	}
+
 	public static void drawLineLandLayerRandom(GraphicsContext gc, Biomes biome) {
 		drawLineLandLayer(gc, biome, random.nextDouble(width), random.nextDouble(height));
 	}
@@ -60,13 +67,13 @@ public final class CanvasDrawifier {
 		}
 	}
 
-	public static void drawLandBiome(GraphicsContext gc, Biomes biomes, double startX, double startY) {
+	private static void drawLandBiome(GraphicsContext gc, Biomes biomes, double startX, double startY) {
 		drawLandBiome(gc, startX, startY, biomes.MAX);
 	}
 
-	public static void drawLandBiome(GraphicsContext gc, double startX, double startY, double maxSize) {
+	private static void drawLandBiome(GraphicsContext gc, double startX, double startY, double maxSize) {
 		gc.moveTo(startX, startY);
-		for (int ii = 0; ii < 1_000; ii++) {
+		for (int ii = 0; ii < 10_000; ii++) {
 			drawWonkyLine(gc, startX, startY, maxSize);
 		}
 	}
