@@ -12,30 +12,32 @@ public class CanvasDrawifier {
 
 	public static void drawBiomes(GraphicsContext gc) {
 		for (Biomes biome : Biomes.values()) {
-			gc.beginPath();
 			final double startX = random.nextDouble(gc.getCanvas().getWidth());
 			final double startY = random.nextDouble(gc.getCanvas().getHeight());
-			gc.moveTo(startX, startY);
 			System.out.println(startX + " " + startY);
-			drawBiome(gc, biome, startX, startY);
-			gc.stroke();
-			gc.closePath();
+			drawLandBiome(gc, biome, startX, startY);
 		}
 	}
 
-	public static void drawBiome(GraphicsContext gc, Biomes biomes, double startX, double startY) {
-		drawBiome(gc, biomes.COLOUR, startX, startY, biomes.MAX);
+
+
+	public static void drawLandBiome(GraphicsContext gc, Biomes biomes, double startX, double startY) {
+		drawLandBiome(gc, biomes.COLOUR, startX, startY, biomes.MAX);
 	}
 
-	public static void drawBiome(GraphicsContext gc, Color colour, double startX, double startY, double maxSize) {
+	public static void drawLandBiome(GraphicsContext gc, Color colour, double startX, double startY, double maxSize) {
 		gc.setStroke(colour);
 		gc.setFill(colour);
+		gc.beginPath();
+		gc.moveTo(startX, startY);
 		for (int ii = 0; ii < 1_000; ii++) {
 			drawWonkyLine(gc, startX, startY, maxSize);
 		}
+		gc.stroke();
+		gc.closePath();
 	}
 
-	static void drawWonkyLine(GraphicsContext gc, double startX, double startY, double maxSize) {
+	private static void drawWonkyLine(GraphicsContext gc, double startX, double startY, double maxSize) {
 		double length = 0;
 		while (length < maxSize) {
 			double[] array = lineSegmentCreator(gc, startX, startY, length, maxSize);
@@ -48,7 +50,7 @@ public class CanvasDrawifier {
 
 
 
-	static double[] lineSegmentCreator(GraphicsContext gc, double startX, double startY, double length, double maxSize) {
+	private static double[] lineSegmentCreator(GraphicsContext gc, double startX, double startY, double length, double maxSize) {
 		double[] endpoints = findEndpoint(gc, startX, startY, maxSize);
 		double outLen = length + (Math.sqrt(Math.pow(endpoints[0] - startX, 2) + Math.pow(endpoints[1] - startY, 2)));
 		return new double[] {endpoints[0], endpoints[1], outLen};
