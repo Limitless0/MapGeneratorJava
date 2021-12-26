@@ -3,10 +3,10 @@ package dev.iskander.mgj;
 import javafx.scene.paint.Color;
 
 public enum Biomes {
+	SPARSE_WOODLAND(Color.YELLOWGREEN, 10),
 	GRASSLAND(Color.LIGHTGREEN, 100),
-	DENSE_WOODLAND(Color.DARKGREEN, 10),
+	DENSE_WOODLAND(Color.DARKGREEN, 100),
 	MOUNTAIN(Color.LIGHTGRAY, 10),
-	SPARSE_WOODLAND(Color.YELLOWGREEN, 10)
 	;
 
 	final Color COLOUR;

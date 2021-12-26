@@ -10,7 +10,6 @@ public class AppController {
 
 	@FXML
 	void doTheThing() {
-		CanvasDrawifier.drawBiomes(canvas.getGraphicsContext2D());
+		Main.createMap(canvas.getGraphicsContext2D());
 	}
-
 }
