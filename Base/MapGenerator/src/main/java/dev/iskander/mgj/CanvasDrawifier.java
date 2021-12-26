@@ -18,12 +18,11 @@ public class CanvasDrawifier {
 		tearDownGC(gc);
 	}
 
-	public static void drawDynamicLandLayer(GraphicsContext gc, Biomes biome, int count) {
+	public static void drawRandomLandLayer(GraphicsContext gc, Biomes biome, int count) {
 		for (int ii = 0; ii < count; ii++) {
 			setUpGC(gc, biome.COLOUR);
 			drawLandBiome(gc, biome,
 					random.nextDouble(width), random.nextDouble(height));
-
 			tearDownGC(gc);
 		}
 	}
@@ -34,9 +33,13 @@ public class CanvasDrawifier {
 		double y = random.nextDouble(height);
 		double maxLength = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		double length = 0;
+
+		boolean flipX = (x > width/2);
+		boolean flipY = (y > height/2);
+
 		while (length < maxLength) {
 			drawLandBiome(gc, biome, x, y);
-			double[] array = lineSegmentCreator(gc, x, y, length, biome.MAX, false);
+			double[] array = lineSegmentCreatorLine(x, y, length, biome.MAX, flipX, flipY);
 			x = array[0];
 			y = array[1];
 			length = array[2];
@@ -60,15 +63,15 @@ public class CanvasDrawifier {
 	public static void drawLandBiome(GraphicsContext gc, double startX, double startY, double maxSize) {
 		gc.moveTo(startX, startY);
 		for (int ii = 0; ii < 1_000; ii++) {
-			drawWonkyLine(gc, startX, startY, maxSize, true);
+			drawWonkyLine(gc, startX, startY, maxSize);
 		}
 	}
 
 	private static void drawWonkyLine(GraphicsContext gc, double startX, double startY,
-									  double maxSize, boolean circle) {
+									  double maxSize) {
 		double length = 0;
 		while (length < maxSize) {
-			double[] array = lineSegmentCreator(gc, startX, startY, length, maxSize, circle);
+			double[] array = lineSegmentCreatorRandom(startX, startY, length, maxSize);
 			startX = array[0];
 			startY = array[1];
 			length = array[2];
@@ -76,50 +79,85 @@ public class CanvasDrawifier {
 		}
 	}
 
-
-
-	private static double[] lineSegmentCreator(GraphicsContext gc, double startX, double startY,
-											   double length, double maxSize, boolean circle) {
-		double[] endpoints = findEndpoint(gc, startX, startY, maxSize, circle);
+	private static double[] lineSegmentCreatorRandom(double startX, double startY,
+													 double length, double maxSize) {
+		double[] endpoints = findEndpointsRandom(startX, startY, maxSize);
 		double outLen = length + (Math.sqrt(Math.pow(endpoints[0] - startX, 2) + Math.pow(endpoints[1] - startY, 2)));
 		return new double[] {endpoints[0], endpoints[1], outLen};
 	}
 
-	private static double[] findEndpoint(GraphicsContext gc, double startX, double startY,
-										 double maxSize, boolean circle) {
+	private static double[] lineSegmentCreatorLine(double startX, double startY, double length,
+												   double maxSize, boolean flipX, boolean flipY) {
+		double[] endpoints = findEndpointsLine(startX, startY, maxSize, flipX, flipY);
+		double outLen = length + (Math.sqrt(Math.pow(endpoints[0] - startX, 2) + Math.pow(endpoints[1] - startY, 2)));
+		return new double[] {endpoints[0], endpoints[1], outLen};
+	}
 
+	private static double[] findEndpointsRandom(double startX, double startY, double maxSize) {
 		double endX = random.nextDouble(Math.sqrt(maxSize));
 		double endY = random.nextDouble(Math.sqrt(maxSize));
 
-		if (circle) {
-			if (random.nextBoolean()) {
-				endX = -endX;
-			}
-			if (random.nextBoolean()) {
-				endY = -endY;
-			}
-		}
+		endX = transformCoordinate(endX, random.nextBoolean()) + startX;
+		endY = transformCoordinate(endY, random.nextBoolean()) + startY;
 
-		endX += startX;
-		endY += startY;
-
-		if (validateEndpoints(gc, startX, startY, endX, endY, maxSize)) {
+		if (validateEndpoints(startX, startY, endX, endY, maxSize)) {
+			endX = moveXCoordinateIntoBounds(endX);
+			endY = moveYCoordinateIntoBounds(endY);
 			return new double[]{endX, endY};
 		} else {
-			return findEndpoint(gc, startX, startY, maxSize, circle);
+			return findEndpointsRandom(startX, startY, maxSize);
 		}
 	}
 
-	private static boolean validateEndpoints(GraphicsContext gc, double startX, double startY,
+	private static double[] findEndpointsLine(double startX, double startY, double maxSize,
+												boolean flipX, boolean flipY) {
+		double endX = random.nextDouble(Math.sqrt(maxSize));
+		double endY = random.nextDouble(Math.sqrt(maxSize));
+
+		endX = moveXCoordinateIntoBounds(transformCoordinate(endX, flipX) + startX);
+		endY = moveYCoordinateIntoBounds(transformCoordinate(endY, flipY) + startY);
+
+		if (validateEndpoints(startX, startY, endX, endY, maxSize)) {
+			return new double[]{endX, endY};
+		} else {
+			return findEndpointsRandom(startX, startY, maxSize);
+		}
+	}
+
+	private static double transformCoordinate(double inCoord, boolean isFlipping) {
+		if (isFlipping) {
+			return -inCoord;
+		}
+		return inCoord;
+	}
+
+	private static double moveXCoordinateIntoBounds(double inCoord) {
+		if (inCoord > width) {
+			inCoord = width - 1;
+		}
+		return inCoord;
+	}
+
+	private static double moveYCoordinateIntoBounds(double inCoord) {
+		if (inCoord > height) {
+			inCoord = height - 1;
+		}
+		return inCoord;
+	}
+
+	private static boolean validateEndpoints(double startX, double startY,
 											 double endX, double endY, double maxSize) {
 
 		if (Math.sqrt(Math.pow((endX - startX), 2) + Math.pow((endY - startY), 2)) > (maxSize * maxSize)) { // length
+			System.out.println("WrongLen");
 			return false;
 		}
 		if (endX < 0 || endX > width) { // in bounds
+			System.out.println("X OOB");
 			return false;
 		}
 		if (endY < 0 || endY > height) { //not simplified for readability
+			System.out.println("Y OOB");
 			return false;
 		}
 		return true;
