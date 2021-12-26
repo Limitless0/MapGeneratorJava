@@ -27,10 +27,12 @@ public class CanvasDrawifier {
 		}
 	}
 
-	public static void drawLineLandLayer(GraphicsContext gc, Biomes biome) {
+	public static void drawLineLandLayerRandom(GraphicsContext gc, Biomes biome) {
+		drawLineLandLayer(gc, biome, random.nextDouble(width), random.nextDouble(height));
+	}
+
+	public static void drawLineLandLayer(GraphicsContext gc, Biomes biome, double x, double y) {
 		setUpGC(gc, biome.COLOUR);
-		double x = random.nextDouble(width);
-		double y = random.nextDouble(height);
 		double maxLength = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		double length = 0;
 
@@ -97,12 +99,10 @@ public class CanvasDrawifier {
 		double endX = random.nextDouble(Math.sqrt(maxSize));
 		double endY = random.nextDouble(Math.sqrt(maxSize));
 
-		endX = transformCoordinate(endX, random.nextBoolean()) + startX;
-		endY = transformCoordinate(endY, random.nextBoolean()) + startY;
+		endX = moveXCoordinateIntoBounds(transformCoordinate(endX, random.nextBoolean()) + startX);
+		endY = moveYCoordinateIntoBounds(transformCoordinate(endY, random.nextBoolean()) + startY);
 
 		if (validateEndpoints(startX, startY, endX, endY, maxSize)) {
-			endX = moveXCoordinateIntoBounds(endX);
-			endY = moveYCoordinateIntoBounds(endY);
 			return new double[]{endX, endY};
 		} else {
 			return findEndpointsRandom(startX, startY, maxSize);
