@@ -37,14 +37,13 @@ public final class CanvasDrawifier {
 	}
 
 	public static void drawLineLandLayerRandom(GraphicsContext gc, Biomes biome) {
-		drawLineLandLayer(gc, biome, random.nextDouble(width), random.nextDouble(height));
+		drawLineLandLayer(gc, biome, random.nextDouble(width), random.nextDouble(height),
+				random.nextDouble(Math.sqrt((width * width) + (height * height))));
 	}
 
-	public static void drawLineLandLayer(GraphicsContext gc, Biomes biome, double x, double y) {
+	public static void drawLineLandLayer(GraphicsContext gc, Biomes biome, double x, double y, double maxLength) {
 		setUpGC(gc, biome.COLOUR);
-		double maxLength = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		double length = 0;
-
 		boolean flipX = (x > width/2);
 		boolean flipY = (y > height/2);
 

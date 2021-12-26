@@ -10,6 +10,7 @@ public class AppController {
 
 	@FXML
 	void doTheThing() {
-		Main.createMap(canvas.getGraphicsContext2D());
+		Thread thread = new Thread(() -> Main.createMap(canvas.getGraphicsContext2D()));
+		thread.start();
 	}
 }
