@@ -57,15 +57,6 @@ public final class CanvasDrawifier {
 		tearDownGC(gc);
 	}
 
-	public static void drawBiomes(GraphicsContext gc) {
-		for (Biomes biome : Biomes.values()) {
-			final double startX = random.nextDouble(gc.getCanvas().getWidth());
-			final double startY = random.nextDouble(gc.getCanvas().getHeight());
-			System.out.println(startX + " " + startY);
-			drawLandBiome(gc, biome, startX, startY);
-		}
-	}
-
 	private static void drawLandBiome(GraphicsContext gc, Biomes biomes, double startX, double startY) {
 		drawLandBiome(gc, startX, startY, biomes.MAX);
 	}
@@ -162,7 +153,7 @@ public final class CanvasDrawifier {
 	private static boolean validateEndpoints(double startX, double startY,
 											 double endX, double endY, double maxSize) {
 
-		if (Math.sqrt(Math.pow((endX - startX), 2) + Math.pow((endY - startY), 2)) > (maxSize * maxSize)) { // length
+		if (Math.sqrt(Math.pow((endX - startX), 2) + Math.pow((endY - startY), 2)) >= (maxSize)) { // length
 			System.out.println("WrongLen");
 			return false;
 		}

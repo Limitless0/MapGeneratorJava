@@ -5,6 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 public class Main {
 	public static void createMap(final GraphicsContext gc) {
 		BiomePlacementManager.initialise(gc);
+		BiomePlacementManager.placeBackgroundLayer(Biomes.WATER);
+		BiomePlacementManager.ellaMethod();
 		BiomePlacementManager.lineMethod();
 	}
 }
