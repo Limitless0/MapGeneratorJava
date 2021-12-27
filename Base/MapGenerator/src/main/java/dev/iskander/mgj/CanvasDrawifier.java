@@ -20,25 +20,11 @@ public final class CanvasDrawifier {
 		tearDownGC(gc);
 	}
 
-	public static void drawRandomLandLayer(GraphicsContext gc, Biomes biome, int count) {
-		for (int ii = 0; ii < count; ii++) {
-			setUpGC(gc, biome.COLOUR);
-			drawLandBiome(gc, biome,
-					random.nextDouble(width), random.nextDouble(height));
-			tearDownGC(gc);
-		}
-	}
-
 	public static void drawDeliberateLandLayer(GraphicsContext gc, Color colour,
 											   double startX, double startY, double maxSize) {
 		setUpGC(gc, colour);
 		drawLandBiome(gc, startX, startY, maxSize);
 		tearDownGC(gc);
-	}
-
-	public static void drawLineLandLayerRandom(GraphicsContext gc, Biomes biome) {
-		drawLineLandLayer(gc, biome, random.nextDouble(width), random.nextDouble(height),
-				random.nextDouble(Math.sqrt((width * width) + (height * height))));
 	}
 
 	public static void drawLineLandLayer(GraphicsContext gc, Biomes biome, double x, double y, double maxLength) {
@@ -178,6 +164,7 @@ public final class CanvasDrawifier {
 
 	private static void tearDownGC(GraphicsContext gc) {
 		gc.stroke();
+		gc.fill();
 		gc.closePath();
 	}
 }
