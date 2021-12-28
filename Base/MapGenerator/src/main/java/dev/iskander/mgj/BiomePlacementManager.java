@@ -1,10 +1,8 @@
 package dev.iskander.mgj;
 
-import javafx.geometry.Rectangle2D;
-import javafx.scene.SnapshotParameters;
+import dev.iskander.canvasDrawifier.Biomes;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,19 +32,13 @@ public class BiomePlacementManager {
 
 	public static void placeBackgroundLayer(Biomes biome) {
 		System.out.println("background");
-		CanvasDrawifier.drawFlatLayer(gc, biome);
-		SnapshotParameters sp = new SnapshotParameters();
-		sp.setFill(biome.COLOUR);
-		savePath(sp);
+		MapGenerator.canvasDrawifier.drawFlatLayer(biome.COLOUR);
 	}
 
 	public static void placeLineLayer(Biomes biome, double maxLength, double... coordsOrLoopNumber) {
 		int loopNumber = validateVarargs(coordsOrLoopNumber);
 		System.out.println("Line Layer");
 		drawLineLayer(biome, loopNumber, maxLength);
-		SnapshotParameters sp = new SnapshotParameters();
-		sp.setFill(Color.TRANSPARENT);
-		savePath(sp);
 	}
 
 
@@ -54,18 +46,6 @@ public class BiomePlacementManager {
 		int loopNumber = validateVarargs(coordsOrLoopNumber);
 		System.out.println("Blob Layer");
 		drawRegularLayer(biome, loopNumber, maxSize);
-		SnapshotParameters sp = new SnapshotParameters();
-		sp.setFill(Color.TRANSPARENT);
-		savePath(sp);
-	}
-
-	private static void savePath(SnapshotParameters sp) {
-		sp.setViewport(new Rectangle2D(0, 0, width, height));
-		MapCreator.pathList.add(CanvasDrawifier.path);
-		MapCreator.sps.add(sp);
-		//writableImage = CanvasDrawifier.path.snapshot(sp, new WritableImage((int) width, (int) height));
-		//MapCreator.imageList.add(writableImage);
-		//gc.drawImage(BiomePlacementManager.writableImage, 0, 0);
 	}
 
 	private static int validateVarargs(double... doubles) {
@@ -98,10 +78,10 @@ public class BiomePlacementManager {
 	}
 
 	private static void drawLineLayer(Biomes biome, int loopNumber, double maxLength) {
-		CanvasDrawifier.drawLineLandLayer(gc, biome, mountainX.get(loopNumber), mountainY.get(loopNumber), maxLength);
+		MapGenerator.canvasDrawifier.drawLineLandLayer(biome, mountainX.get(loopNumber), mountainY.get(loopNumber), maxLength);
 	}
 
 	private static void drawRegularLayer(Biomes biome, int loopNumber, double maxSize) {
-		CanvasDrawifier.drawDeliberateLandLayer(gc, biome.COLOUR, mountainX.get(loopNumber), mountainY.get(loopNumber), maxSize);
+		MapGenerator.canvasDrawifier.drawDeliberateLandLayer(biome.COLOUR, mountainX.get(loopNumber), mountainY.get(loopNumber), maxSize);
 	}
 }

@@ -1,38 +1,56 @@
-package dev.iskander.mgj;
+package dev.iskander.pathToImageDrawifier;
 
+import dev.iskander.canvasDrawifier.Biomes;
+import dev.iskander.canvasDrawifier.CanvasDrawifier;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
 import java.util.Random;
 
+public class PathToImageDrawifier implements CanvasDrawifier {
 
-public final class CanvasDrawifier {
-
-	private static final Random random = new Random();
-	private static double width;
-	private static double height;
-	public static Path path;
-
-	private CanvasDrawifier() {} //this class is a static utility class, instances should not be permitted
+	private final Random random = new Random();
+	private double width;
+	private double height;
+	private GraphicsContext gc;
 
 
+	public PathToImageDrawifier() {}
 
-	public static void drawFlatLayer(GraphicsContext gc, Biomes biome) {
-		setUpPath(biome.COLOUR);
-		//gc.fillRect(0,0, width, height);
+	@Override
+	public void initialise(GraphicsContext gc) {
+		this.gc = gc;
+		width = gc.getCanvas().getWidth();
+		height = gc.getCanvas().getHeight();
+
+	}
+	@Override
+	public void drawFlatLayer(Color colour) {
+		setUpPath(colour);
+		SnapshotParameters sp = new SnapshotParameters();
+		sp.setFill(colour);
 		path.getElements().addAll(new MoveTo(0, 0),
 				new VLineTo(height), new HLineTo(width), new VLineTo(0), new HLineTo(0));
+		storePathAndSnapshot(sp);
 	}
 
-	public static void drawDeliberateLandLayer(GraphicsContext gc, Color colour,
-											   double startX, double startY, double maxSize) {
+	@Override
+	public void drawDeliberateLandLayer(Color colour, double startX, double startY, double maxSize) {
 		setUpPath(colour);
+		path.getElements().add(new MoveTo(startX, startY));
 		drawLandBiome(startX, startY, maxSize);
+		SnapshotParameters sp = new SnapshotParameters();
+		sp.setFill(Color.TRANSPARENT);
+		storePathAndSnapshot(sp);
 	}
 
-	public static void drawLineLandLayer(GraphicsContext gc, Biomes biome, double x, double y, double maxLength) {
+	@Override
+	public void drawLineLandLayer(Biomes biome, double x, double y, double maxLength) {
 		setUpPath(biome.COLOUR);
+		path.getElements().add(new MoveTo(x, y));
 		double length = 0;
 		boolean flipX = (x > width/2);
 		boolean flipY = (y > height/2);
@@ -44,13 +62,16 @@ public final class CanvasDrawifier {
 			y = array[1];
 			length = array[2];
 		}
+		SnapshotParameters sp = new SnapshotParameters();
+		sp.setFill(Color.TRANSPARENT);
+		storePathAndSnapshot(sp);
 	}
 
-	private static void drawLandBiome(Biomes biomes, double startX, double startY) {
+	private void drawLandBiome(Biomes biomes, double startX, double startY) {
 		drawLandBiome(startX, startY, biomes.MAX);
 	}
 
-	private static void drawLandBiome(double startX, double startY, double maxSize) {
+	private void drawLandBiome(double startX, double startY, double maxSize) {
 		//gc.moveTo(startX, startY);
 		path.getElements().add(new MoveTo(startX, startY));
 		for (int ii = 0; ii < 5_000; ii++) {
@@ -58,7 +79,7 @@ public final class CanvasDrawifier {
 		}
 	}
 
-	private static void drawWonkyLine(double startX, double startY,
+	private void drawWonkyLine(double startX, double startY,
 									  double maxSize) {
 		double length = 0;
 		while (length < maxSize) {
@@ -71,21 +92,21 @@ public final class CanvasDrawifier {
 		}
 	}
 
-	private static double[] lineSegmentCreatorRandom(double startX, double startY,
+	private double[] lineSegmentCreatorRandom(double startX, double startY,
 													 double length, double maxSize) {
 		double[] endpoints = findEndpointsRandom(startX, startY, maxSize);
 		double outLen = length + (Math.sqrt(Math.pow(endpoints[0] - startX, 2) + Math.pow(endpoints[1] - startY, 2)));
 		return new double[] {endpoints[0], endpoints[1], outLen};
 	}
 
-	private static double[] lineSegmentCreatorLine(double startX, double startY, double length,
+	private double[] lineSegmentCreatorLine(double startX, double startY, double length,
 												   double maxSize, boolean flipX, boolean flipY) {
 		double[] endpoints = findEndpointsLine(startX, startY, maxSize, flipX, flipY);
 		double outLen = length + (Math.sqrt(Math.pow(endpoints[0] - startX, 2) + Math.pow(endpoints[1] - startY, 2)));
 		return new double[] {endpoints[0], endpoints[1], outLen};
 	}
 
-	private static double[] findEndpointsRandom(double startX, double startY, double maxSize) {
+	private double[] findEndpointsRandom(double startX, double startY, double maxSize) {
 		double endX = random.nextDouble(Math.sqrt(maxSize));
 		double endY = random.nextDouble(Math.sqrt(maxSize));
 
@@ -99,8 +120,8 @@ public final class CanvasDrawifier {
 		}
 	}
 
-	private static double[] findEndpointsLine(double startX, double startY, double maxSize,
-												boolean flipX, boolean flipY) {
+	private double[] findEndpointsLine(double startX, double startY, double maxSize,
+											  boolean flipX, boolean flipY) {
 		double endX = random.nextDouble(Math.sqrt(maxSize));
 		double endY = random.nextDouble(Math.sqrt(maxSize));
 
@@ -114,14 +135,14 @@ public final class CanvasDrawifier {
 		}
 	}
 
-	private static double transformCoordinate(double inCoord, boolean isFlipping) {
+	private double transformCoordinate(double inCoord, boolean isFlipping) {
 		if (isFlipping) {
 			return -inCoord;
 		}
 		return inCoord;
 	}
 
-	private static double moveXCoordinateIntoBounds(double inCoord) {
+	private double moveXCoordinateIntoBounds(double inCoord) {
 		if (inCoord > width) {
 			inCoord = width;
 		}
@@ -131,7 +152,7 @@ public final class CanvasDrawifier {
 		return inCoord;
 	}
 
-	private static double moveYCoordinateIntoBounds(double inCoord) {
+	private double moveYCoordinateIntoBounds(double inCoord) {
 		if (inCoord > height) {
 			inCoord = height;
 		}
@@ -141,7 +162,7 @@ public final class CanvasDrawifier {
 		return inCoord;
 	}
 
-	private static boolean validateEndpoints(double startX, double startY,
+	private boolean validateEndpoints(double startX, double startY,
 											 double endX, double endY, double maxSize) {
 
 		if (Math.sqrt(Math.pow((endX - startX), 2) + Math.pow((endY - startY), 2)) >= (maxSize)) { // length
@@ -159,19 +180,23 @@ public final class CanvasDrawifier {
 		return true;
 	}
 
-	private static void setUpPath(Color colour) {
-		path = new Path();
+	private void setUpPath(Color colour) {
+		path.getElements().removeAll(path.getElements());
 		path.minHeight(height);
 		path.minWidth(width);
 		path.maxHeight(height);
 		path.maxWidth(width);
-
 		path.setStroke(colour);
 		path.setFill(colour);
 	}
 
-	public static void initialise(GraphicsContext gc) {
-		width = gc.getCanvas().getWidth();
-		height = gc.getCanvas().getHeight();
+	private void storePathAndSnapshot(SnapshotParameters sp) {
+		sp.setViewport(new Rectangle2D(0, 0, width, height));
+		Path newPath = new Path(path.getElements());
+		newPath.setFill(path.getFill());
+		newPath.setStroke(path.getStroke());
+		pathList.add(newPath);
+		sps.add(sp);
+
 	}
 }

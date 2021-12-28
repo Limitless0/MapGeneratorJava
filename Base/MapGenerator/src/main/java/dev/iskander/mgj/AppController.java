@@ -9,6 +9,8 @@ import javafx.scene.shape.Path;
 
 public class AppController {
 
+	public static Thread thread;
+
     @FXML
 	Canvas canvas;
 
@@ -17,20 +19,30 @@ public class AppController {
 
 	@FXML
 	void doTheThing() {
-		CanvasDrawifier.initialise(canvas.getGraphicsContext2D());
+		MapGenerator.canvasDrawifier.initialise(canvas.getGraphicsContext2D());
 		BiomePlacementManager.initialise(canvas.getGraphicsContext2D());
-		Thread thread = new Thread(new MapCreator());
-		thread.start();
+		MapGenerator.canvasDrawifier.initialise(canvas.getGraphicsContext2D());
+		if (thread == null || !thread.isAlive()) {
+			var mapCreator = new MapCreator();
+			progressBar.progressProperty().bind(mapCreator.progressProperty());
+			System.out.println("new thread");
+			thread = new Thread(mapCreator);
+			thread.start();
+		} else {
+			System.out.println("Old thread still running");
+		}
 	}
-	@FXML
-	 void checkOnTheThing() {
-		for (int ii = 0; ii < MapCreator.pathList.size(); ii++) {
-			Path path = MapCreator.pathList.get(ii);
-			SnapshotParameters sp = MapCreator.sps.get(ii);
 
+	@FXML
+	void checkOnTheThing() {
+		for (int ii = 0; ii < MapGenerator.canvasDrawifier.pathList.size(); ii++) {
+			Path path = MapGenerator.canvasDrawifier.pathList.get(ii);
+			SnapshotParameters sp = MapGenerator.canvasDrawifier.sps.get(ii);
 			canvas.getGraphicsContext2D().drawImage(path.snapshot(sp,
-					new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight())),
+							new WritableImage(
+									(int) canvas.getWidth(), (int) canvas.getHeight())),
 					0, 0);
+			System.out.println((ii + 1) + "/" + MapGenerator.canvasDrawifier.pathList.size());
 		}
 	}
 }

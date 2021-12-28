@@ -11,6 +11,21 @@
 
     <modules>
         <module>MapGenerator</module>
+        <module>CanvasDrawifier</module>
+        <module>PathToImageDrawifier</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17.0.2-ea+1</version> <!-- TODO switch over to main release when it comes out -->
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>17.0.2-ea+1</version> <!-- TODO switch over to main release when it comes out -->
+        </dependency>
+    </dependencies>
 
 </project>

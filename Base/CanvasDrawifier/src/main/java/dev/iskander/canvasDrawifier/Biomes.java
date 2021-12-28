@@ -1,4 +1,4 @@
-package dev.iskander.mgj;
+package dev.iskander.canvasDrawifier;
 
 import javafx.scene.paint.Color;
 
@@ -10,8 +10,8 @@ public enum Biomes { //maxSize must be greater than 1 to work correctly with lin
 	WATER(Color.BLUE, 2)
 	;
 
-	final Color COLOUR;
-	final double MAX;
+	public final Color COLOUR;
+	public final double MAX;
 
 	Biomes(Color color, double maxSize) {
 		this.COLOUR = color;

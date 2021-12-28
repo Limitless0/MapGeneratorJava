@@ -18,16 +18,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
-      <version>17.0.2-ea+1</version> <!-- TODO switch over to main release when it comes out -->
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <version>17.0.2-ea+1</version> <!-- TODO switch over to main release when it comes out -->
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.8.2</version>
@@ -38,6 +28,11 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.8.2</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>dev.iskander</groupId>
+      <artifactId>PathToImageDrawifier</artifactId>
+      <version>0.1</version>
     </dependency>
 
   </dependencies>
