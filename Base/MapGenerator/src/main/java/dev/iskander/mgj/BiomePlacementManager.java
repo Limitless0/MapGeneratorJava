@@ -1,6 +1,5 @@
 package dev.iskander.mgj;
 
-import dev.iskander.canvasDrawifier.Biomes;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
 
@@ -79,7 +78,7 @@ public class BiomePlacementManager {
 	}
 
 	private static void drawLineLayer(Biomes biome, int loopNumber, double maxLength) {
-		MapGenerator.canvasDrawifier.drawLineLandLayer(biome, mountainX.get(loopNumber), mountainY.get(loopNumber), maxLength);
+		MapGenerator.canvasDrawifier.drawLineLandLayer(biome.COLOUR, biome.MAX, mountainX.get(loopNumber), mountainY.get(loopNumber), maxLength);
 	}
 
 	private static void drawRegularLayer(Biomes biome, int loopNumber, double maxSize) {

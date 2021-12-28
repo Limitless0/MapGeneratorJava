@@ -1,4 +1,4 @@
-package dev.iskander.canvasDrawifier;
+package dev.iskander.mgj;
 
 import javafx.scene.paint.Color;
 

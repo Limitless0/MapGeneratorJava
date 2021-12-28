@@ -1,10 +1,10 @@
 package dev.iskander.mgj;
 
-import dev.iskander.canvasDrawifier.Biomes;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -111,19 +111,13 @@ public class MapCreator extends Task<Void> {
 		return null;
 	}
 
-	private boolean waitForCompletion(List<Future<Void>> futures) {
+	private void waitForCompletion(List<Future<Void>> futures) {
 		for (Future<Void> future : futures) {
-			while (!future.isDone()) {
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					//taking too long
-					future.cancel(true);
-					return true;
-				}
+			try {
+				future.get();
+			} catch (InterruptedException | ExecutionException ignored) {
 			}
 		}
-		return false;
 	}
 
 	private void placeGrasslandBlob(double size, double locationNumber) {

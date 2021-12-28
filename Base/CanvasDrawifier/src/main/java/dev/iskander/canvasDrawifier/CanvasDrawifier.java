@@ -18,5 +18,5 @@ public interface CanvasDrawifier {
 
 	void drawDeliberateLandLayer(Color colour, double startX, double startY, double maxSize);
 
-	void drawLineLandLayer(Biomes biome, double x, double y, double maxLength);
+	void drawLineLandLayer(Color colour, double size, double x, double y, double maxLength);
 }

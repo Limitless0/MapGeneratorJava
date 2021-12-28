@@ -1,6 +1,5 @@
 package dev.iskander.pathToImageDrawifier;
 
-import dev.iskander.canvasDrawifier.Biomes;
 import dev.iskander.canvasDrawifier.CanvasDrawifier;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.SnapshotParameters;
@@ -50,17 +49,17 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 	}
 
 	@Override
-	public void drawLineLandLayer(Biomes biome, double x, double y, double maxLength) {
+	public void drawLineLandLayer(Color color, double size, double x, double y, double maxLength) {
 		Path path = new Path();
-		setUpPath(path, biome.COLOUR);
+		setUpPath(path, color);
 		path.getElements().add(new MoveTo(x, y));
 		double length = 0;
 		boolean flipX = (x > width/2);
 		boolean flipY = (y > height/2);
 
 		while (length < maxLength) {
-			drawLandBiome(biome, x, y, path);
-			double[] array = lineSegmentCreatorLine(x, y, length, biome.MAX, flipX, flipY);
+			drawLandBiome(x, y, size, path);
+			double[] array = lineSegmentCreatorLine(x, y, length, size, flipX, flipY);
 			x = array[0];
 			y = array[1];
 			length = array[2];
@@ -70,9 +69,6 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		storePathAndSnapshot(path, sp);
 	}
 
-	private void drawLandBiome(Biomes biomes, double startX, double startY, Path path) {
-		drawLandBiome(startX, startY, biomes.MAX, path);
-	}
 
 	private void drawLandBiome(double startX, double startY, double maxSize, Path path) {
 		//gc.moveTo(startX, startY);
