@@ -12,7 +12,6 @@ public interface CanvasDrawifier {
 
 	List<Path> pathList = new ArrayList<>();
 	List<SnapshotParameters> sps = new ArrayList<>();
-	Path path = new Path();
 
 	void initialise(GraphicsContext gc);
 	void drawFlatLayer(Color color);

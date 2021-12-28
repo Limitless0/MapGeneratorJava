@@ -29,34 +29,37 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 	}
 	@Override
 	public void drawFlatLayer(Color colour) {
-		setUpPath(colour);
+		Path path = new Path();
+		setUpPath(path, colour);
 		SnapshotParameters sp = new SnapshotParameters();
 		sp.setFill(colour);
 		path.getElements().addAll(new MoveTo(0, 0),
 				new VLineTo(height), new HLineTo(width), new VLineTo(0), new HLineTo(0));
-		storePathAndSnapshot(sp);
+		storePathAndSnapshot(path, sp);
 	}
 
 	@Override
 	public void drawDeliberateLandLayer(Color colour, double startX, double startY, double maxSize) {
-		setUpPath(colour);
+		Path path = new Path();
+		setUpPath(path, colour);
 		path.getElements().add(new MoveTo(startX, startY));
-		drawLandBiome(startX, startY, maxSize);
+		drawLandBiome(startX, startY, maxSize, path);
 		SnapshotParameters sp = new SnapshotParameters();
 		sp.setFill(Color.TRANSPARENT);
-		storePathAndSnapshot(sp);
+		storePathAndSnapshot(path, sp);
 	}
 
 	@Override
 	public void drawLineLandLayer(Biomes biome, double x, double y, double maxLength) {
-		setUpPath(biome.COLOUR);
+		Path path = new Path();
+		setUpPath(path, biome.COLOUR);
 		path.getElements().add(new MoveTo(x, y));
 		double length = 0;
 		boolean flipX = (x > width/2);
 		boolean flipY = (y > height/2);
 
 		while (length < maxLength) {
-			drawLandBiome(biome, x, y);
+			drawLandBiome(biome, x, y, path);
 			double[] array = lineSegmentCreatorLine(x, y, length, biome.MAX, flipX, flipY);
 			x = array[0];
 			y = array[1];
@@ -64,23 +67,23 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		}
 		SnapshotParameters sp = new SnapshotParameters();
 		sp.setFill(Color.TRANSPARENT);
-		storePathAndSnapshot(sp);
+		storePathAndSnapshot(path, sp);
 	}
 
-	private void drawLandBiome(Biomes biomes, double startX, double startY) {
-		drawLandBiome(startX, startY, biomes.MAX);
+	private void drawLandBiome(Biomes biomes, double startX, double startY, Path path) {
+		drawLandBiome(startX, startY, biomes.MAX, path);
 	}
 
-	private void drawLandBiome(double startX, double startY, double maxSize) {
+	private void drawLandBiome(double startX, double startY, double maxSize, Path path) {
 		//gc.moveTo(startX, startY);
 		path.getElements().add(new MoveTo(startX, startY));
 		for (int ii = 0; ii < 5_000; ii++) {
-			drawWonkyLine(startX, startY, maxSize);
+			drawWonkyLine(startX, startY, maxSize, path);
 		}
 	}
 
 	private void drawWonkyLine(double startX, double startY,
-									  double maxSize) {
+									  double maxSize, Path path) {
 		double length = 0;
 		while (length < maxSize) {
 			double[] array = lineSegmentCreatorRandom(startX, startY, length, maxSize);
@@ -180,7 +183,7 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		return true;
 	}
 
-	private void setUpPath(Color colour) {
+	private void setUpPath(Path path, Color colour) {
 		path.getElements().removeAll(path.getElements());
 		path.minHeight(height);
 		path.minWidth(width);
@@ -190,12 +193,9 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		path.setFill(colour);
 	}
 
-	private void storePathAndSnapshot(SnapshotParameters sp) {
+	private void storePathAndSnapshot(Path path, SnapshotParameters sp) {
 		sp.setViewport(new Rectangle2D(0, 0, width, height));
-		Path newPath = new Path(path.getElements());
-		newPath.setFill(path.getFill());
-		newPath.setStroke(path.getStroke());
-		pathList.add(newPath);
+		pathList.add(path);
 		sps.add(sp);
 
 	}

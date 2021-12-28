@@ -3,9 +3,15 @@ package dev.iskander.mgj;
 import dev.iskander.canvasDrawifier.Biomes;
 import javafx.concurrent.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class MapCreator extends Task<Void> {
 
-	static int blobLocations = 3;
+	static int blobLocations = 2;
 	static int lineLocations = 1;
 	static int totalStartLocations = blobLocations + lineLocations;
 	static double size = 300;
@@ -14,56 +20,117 @@ public class MapCreator extends Task<Void> {
 	@Override
 	public Void call() {
 		BiomePlacementManager.placeBackgroundLayer(Biomes.WATER);
+		ExecutorService executorService = Executors.newFixedThreadPool(totalStartLocations);
+		List<Future<Void>> futures = new ArrayList<>();
 		for (int ii = 0; ii < blobLocations; ii++) {
-			placeGrasslandBlob(size);
-			updateProgress(BiomePlacementManager.getLoops(),
+			int jj = ii;
+			futures.add(executorService.submit(() -> {
+				placeGrasslandBlob(size, jj);
+				updateProgress(BiomePlacementManager.getLoops(),
 					(long) (Biomes.values().length - 1) * totalStartLocations);
+				return null;
+			}));
 		}
 		for (int ii = blobLocations; ii < totalStartLocations; ii++) {
-			placeGrasslandLine(length);
-			updateProgress(BiomePlacementManager.getLoops(),
+			int jj = ii;
+			futures.add(executorService.submit(() -> {
+				placeGrasslandLine(length, jj);
+				updateProgress(BiomePlacementManager.getLoops(),
 					(long) (Biomes.values().length - 1) * totalStartLocations);
+				return null;
+			}));
 		}
+		waitForCompletion(futures);
+		System.out.println(MapGenerator.canvasDrawifier.pathList.size());
+		futures.clear();
+
 		for (int ii = 0; ii < blobLocations; ii++) {
-			placeDenseWoodBlob(size * 0.75, ii);
-			updateProgress(BiomePlacementManager.getLoops(),
-					(long) (Biomes.values().length - 1) * totalStartLocations);
-		}
+			int jj = ii; // effectively final
+			futures.add(executorService.submit(() -> {
+				placeDenseWoodBlob(size * 0.7, jj);
+				updateProgress(BiomePlacementManager.getLoops(),
+						(long) (Biomes.values().length - 1) * totalStartLocations);
+				return null;
+			}));}
 		for (int ii = blobLocations; ii < totalStartLocations; ii++) {
-			placeDenseWoodLine(length, ii);
-			updateProgress(BiomePlacementManager.getLoops(),
-					(long) (Biomes.values().length - 1) * totalStartLocations);
-		}
+			int jj = ii; // effectively final
+			futures.add(executorService.submit(() -> {
+				placeDenseWoodLine(length, jj);
+				updateProgress(BiomePlacementManager.getLoops(),
+						(long) (Biomes.values().length - 1) * totalStartLocations);
+				return null;
+			}));}
+
+		waitForCompletion(futures);
+		System.out.println(MapGenerator.canvasDrawifier.pathList.size());
+		futures.clear();
+
 		for (int ii = 0; ii < blobLocations; ii++) {
-			placeSparseWoodBlob(size * 0.20, ii);
-			updateProgress(BiomePlacementManager.getLoops(),
-					(long) (Biomes.values().length - 1) * totalStartLocations);
-		}
+			int jj = ii; // effectively final
+			futures.add(executorService.submit(() -> {
+				placeSparseWoodBlob(size * 0.4, jj);
+				updateProgress(BiomePlacementManager.getLoops(),
+						(long) (Biomes.values().length - 1) * totalStartLocations);
+				return null;
+			}));}
 		for (int ii = blobLocations; ii < totalStartLocations; ii++) {
-			placeSparseWoodLine(length, ii);
-			updateProgress(BiomePlacementManager.getLoops(),
-					(long) (Biomes.values().length - 1) * totalStartLocations);
-		}
+			int jj = ii; // effectively final
+			futures.add(executorService.submit(() -> {
+				placeSparseWoodLine(length, jj);
+				updateProgress(BiomePlacementManager.getLoops(),
+						(long) (Biomes.values().length - 1) * totalStartLocations);
+				return null;
+			}));}
+
+		waitForCompletion(futures);
+		System.out.println(MapGenerator.canvasDrawifier.pathList.size());
+		futures.clear();
+
 		for (int ii = 0; ii < blobLocations; ii++) {
-			placeMountainBlob(size * 0.05, ii);
-			updateProgress(BiomePlacementManager.getLoops(),
-					(long) (Biomes.values().length - 1) * totalStartLocations);
-		}
+			int jj = ii; // effectively final
+			futures.add(executorService.submit(() -> {
+				placeMountainBlob(size * 0.1, jj);
+				updateProgress(BiomePlacementManager.getLoops(),
+						(long) (Biomes.values().length - 1) * totalStartLocations);
+				return null;
+			}));}
 		for (int ii = blobLocations; ii < totalStartLocations; ii++) {
-			placeMountainLine(length, ii);
-			updateProgress(BiomePlacementManager.getLoops(),
+			int jj = ii; // effectively final
+			futures.add(executorService.submit(() -> {
+				placeMountainLine(length, jj);
+				return null;
+			}));}
+
+		waitForCompletion(futures);
+		System.out.println(MapGenerator.canvasDrawifier.pathList.size());
+
+		updateProgress(BiomePlacementManager.getLoops(),
 					(long) (Biomes.values().length - 1) * totalStartLocations);
-		}
 		System.out.println("Done!");
 		return null;
 	}
 
-	private void placeGrasslandBlob(double size) {
-		BiomePlacementManager.placeBlobLayer(Biomes.GRASSLAND, size);
+	private boolean waitForCompletion(List<Future<Void>> futures) {
+		for (Future<Void> future : futures) {
+			while (!future.isDone()) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					//taking too long
+					future.cancel(true);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
-	private void placeGrasslandLine(double length) {
-		BiomePlacementManager.placeLineLayer(Biomes.GRASSLAND, length);
+	private void placeGrasslandBlob(double size, double locationNumber) {
+		BiomePlacementManager.placeBlobLayer(Biomes.GRASSLAND, size, locationNumber);
+	}
+
+	private void placeGrasslandLine(double length, double locationNumber) {
+		BiomePlacementManager.placeLineLayer(Biomes.GRASSLAND, length, locationNumber);
 	}
 
 	private void placeDenseWoodBlob(double size, int locationNumber) {
