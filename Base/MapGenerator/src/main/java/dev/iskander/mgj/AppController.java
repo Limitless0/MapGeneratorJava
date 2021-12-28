@@ -7,10 +7,15 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.WritableImage;
 import javafx.scene.shape.Path;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class AppController {
 
-	public static Thread thread;
-
+	private static ExecutorService executorService = Executors.newSingleThreadExecutor();
+	private static Future<?> future;
     @FXML
 	Canvas canvas;
 
@@ -22,15 +27,18 @@ public class AppController {
 		MapGenerator.canvasDrawifier.initialise(canvas.getGraphicsContext2D());
 		BiomePlacementManager.initialise(canvas.getGraphicsContext2D());
 		MapGenerator.canvasDrawifier.initialise(canvas.getGraphicsContext2D());
-		if (thread == null || !thread.isAlive()) {
-			var mapCreator = new MapCreator();
-			progressBar.progressProperty().bind(mapCreator.progressProperty());
-			System.out.println("new thread");
-			thread = new Thread(mapCreator);
-			thread.start();
-		} else {
-			System.out.println("Old thread still running");
+		MapCreator mapCreator = new MapCreator();
+		future = executorService.submit(mapCreator);
+		progressBar.progressProperty().bind(mapCreator.progressProperty());
+
+		try {
+			future.get();
+			executorService.shutdown();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
 		}
+
+		checkOnTheThing();
 	}
 
 	@FXML

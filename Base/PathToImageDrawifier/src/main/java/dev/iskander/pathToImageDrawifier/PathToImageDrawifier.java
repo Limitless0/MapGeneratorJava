@@ -77,7 +77,7 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 	private void drawLandBiome(double startX, double startY, double maxSize, Path path) {
 		//gc.moveTo(startX, startY);
 		path.getElements().add(new MoveTo(startX, startY));
-		for (int ii = 0; ii < 5_000; ii++) {
+		for (int ii = 0; ii < 5000; ii++) {
 			drawWonkyLine(startX, startY, maxSize, path);
 		}
 	}

@@ -5,14 +5,15 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BiomePlacementManager {
 
 	private static GraphicsContext gc;
 	private static final Random random = new Random();
-	private static ArrayList<Double> mountainX = new ArrayList<>();
-	private static ArrayList<Double> mountainY = new ArrayList<>();
+	private static List<Double> mountainX = new ArrayList<>();
+	private static List<Double> mountainY = new ArrayList<>();
 	private static double width;
 	private static double height;
 	public static WritableImage writableImage;

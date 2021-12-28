@@ -107,6 +107,7 @@ public class MapCreator extends Task<Void> {
 		updateProgress(BiomePlacementManager.getLoops(),
 					(long) (Biomes.values().length - 1) * totalStartLocations);
 		System.out.println("Done!");
+		executorService.shutdown();
 		return null;
 	}
 
