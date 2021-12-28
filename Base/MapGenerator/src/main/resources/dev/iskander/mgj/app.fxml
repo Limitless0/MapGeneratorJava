@@ -41,6 +41,8 @@
          <children>
                   <Canvas fx:id="canvas" height="342.0" width="641.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
             <Button layoutX="314.0" layoutY="372.0" mnemonicParsing="false" onAction="#doTheThing" text="Button" />
+            <ProgressBar fx:id="progressBar" layoutX="55.0" layoutY="375.0" prefWidth="200.0" progress="0.0" />
+            <Button layoutX="454.0" layoutY="373.0" mnemonicParsing="false" onAction="#checkOnTheThing" text="Button" />
          </children>
     </AnchorPane>
     <MenuBar>

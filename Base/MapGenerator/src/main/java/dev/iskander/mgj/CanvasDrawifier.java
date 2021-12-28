@@ -2,6 +2,7 @@ package dev.iskander.mgj;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 
 import java.util.Random;
 
@@ -11,50 +12,53 @@ public final class CanvasDrawifier {
 	private static final Random random = new Random();
 	private static double width;
 	private static double height;
+	public static Path path;
 
 	private CanvasDrawifier() {} //this class is a static utility class, instances should not be permitted
 
+
+
 	public static void drawFlatLayer(GraphicsContext gc, Biomes biome) {
-		setUpGC(gc, biome.COLOUR);
-		gc.fillRect(0,0, width, height);
-		tearDownGC(gc);
+		setUpPath(biome.COLOUR);
+		//gc.fillRect(0,0, width, height);
+		path.getElements().addAll(new MoveTo(0, 0),
+				new VLineTo(height), new HLineTo(width), new VLineTo(0), new HLineTo(0));
 	}
 
 	public static void drawDeliberateLandLayer(GraphicsContext gc, Color colour,
 											   double startX, double startY, double maxSize) {
-		setUpGC(gc, colour);
-		drawLandBiome(gc, startX, startY, maxSize);
-		tearDownGC(gc);
+		setUpPath(colour);
+		drawLandBiome(startX, startY, maxSize);
 	}
 
 	public static void drawLineLandLayer(GraphicsContext gc, Biomes biome, double x, double y, double maxLength) {
-		setUpGC(gc, biome.COLOUR);
+		setUpPath(biome.COLOUR);
 		double length = 0;
 		boolean flipX = (x > width/2);
 		boolean flipY = (y > height/2);
 
 		while (length < maxLength) {
-			drawLandBiome(gc, biome, x, y);
+			drawLandBiome(biome, x, y);
 			double[] array = lineSegmentCreatorLine(x, y, length, biome.MAX, flipX, flipY);
 			x = array[0];
 			y = array[1];
 			length = array[2];
 		}
-		tearDownGC(gc);
 	}
 
-	private static void drawLandBiome(GraphicsContext gc, Biomes biomes, double startX, double startY) {
-		drawLandBiome(gc, startX, startY, biomes.MAX);
+	private static void drawLandBiome(Biomes biomes, double startX, double startY) {
+		drawLandBiome(startX, startY, biomes.MAX);
 	}
 
-	private static void drawLandBiome(GraphicsContext gc, double startX, double startY, double maxSize) {
-		gc.moveTo(startX, startY);
-		for (int ii = 0; ii < 10_000; ii++) {
-			drawWonkyLine(gc, startX, startY, maxSize);
+	private static void drawLandBiome(double startX, double startY, double maxSize) {
+		//gc.moveTo(startX, startY);
+		path.getElements().add(new MoveTo(startX, startY));
+		for (int ii = 0; ii < 5_000; ii++) {
+			drawWonkyLine(startX, startY, maxSize);
 		}
 	}
 
-	private static void drawWonkyLine(GraphicsContext gc, double startX, double startY,
+	private static void drawWonkyLine(double startX, double startY,
 									  double maxSize) {
 		double length = 0;
 		while (length < maxSize) {
@@ -62,7 +66,8 @@ public final class CanvasDrawifier {
 			startX = array[0];
 			startY = array[1];
 			length = array[2];
-			gc.lineTo(startX, startY);
+			path.getElements().add(new LineTo(startX, startY));
+			//gc.lineTo(startX, startY);
 		}
 	}
 
@@ -154,17 +159,19 @@ public final class CanvasDrawifier {
 		return true;
 	}
 
-	private static void setUpGC(GraphicsContext gc, Color color) {
-		width = gc.getCanvas().getWidth();
-		height = gc.getCanvas().getHeight();
-		gc.setFill(color);
-		gc.setStroke(color);
-		gc.beginPath();
+	private static void setUpPath(Color colour) {
+		path = new Path();
+		path.minHeight(height);
+		path.minWidth(width);
+		path.maxHeight(height);
+		path.maxWidth(width);
+
+		path.setStroke(colour);
+		path.setFill(colour);
 	}
 
-	private static void tearDownGC(GraphicsContext gc) {
-		gc.stroke();
-		gc.fill();
-		gc.closePath();
+	public static void initialise(GraphicsContext gc) {
+		width = gc.getCanvas().getWidth();
+		height = gc.getCanvas().getHeight();
 	}
 }

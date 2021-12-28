@@ -8,11 +8,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MapGenerator extends Application {
+
+    public static FXMLLoader fxmlLoader = new FXMLLoader(MapGenerator.class.getResource("app.fxml"));
+    public static Scene scene;
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MapGenerator.class.getResource("app.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Map Generator");
         stage.setScene(scene);
         stage.show();
     }
