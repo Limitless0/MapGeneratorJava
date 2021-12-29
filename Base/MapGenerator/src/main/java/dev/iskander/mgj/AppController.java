@@ -7,6 +7,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.WritableImage;
 import javafx.scene.shape.Path;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,9 +15,7 @@ import java.util.concurrent.Future;
 
 public class AppController {
 
-	private static ExecutorService executorService = Executors.newSingleThreadExecutor();
-	private static Future<?> future;
-    @FXML
+	@FXML
 	Canvas canvas;
 
 	@FXML
@@ -24,21 +23,23 @@ public class AppController {
 
 	@FXML
 	void doTheThing() {
+		System.out.println(LocalDateTime.now() + " Start");
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		MapGenerator.canvasDrawifier.initialise(canvas.getGraphicsContext2D());
 		BiomePlacementManager.initialise(canvas.getGraphicsContext2D());
-		MapGenerator.canvasDrawifier.initialise(canvas.getGraphicsContext2D());
 		MapCreator mapCreator = new MapCreator();
-		future = executorService.submit(mapCreator);
+		Future<?> future = executorService.submit(mapCreator);
 		progressBar.progressProperty().bind(mapCreator.progressProperty());
 
 		try {
 			future.get();
-			executorService.shutdown();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-
+		executorService.shutdown();
+		System.out.println(LocalDateTime.now() + " Generation completed, rendering...");
 		checkOnTheThing();
+		System.out.println(LocalDateTime.now() + " Completely done");
 	}
 
 	@FXML
@@ -50,7 +51,6 @@ public class AppController {
 							new WritableImage(
 									(int) canvas.getWidth(), (int) canvas.getHeight())),
 					0, 0);
-			System.out.println((ii + 1) + "/" + MapGenerator.canvasDrawifier.pathList.size());
 		}
 	}
 }

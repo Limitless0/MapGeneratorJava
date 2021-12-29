@@ -1,7 +1,6 @@
 package dev.iskander.mgj;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.WritableImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,6 @@ public class BiomePlacementManager {
 	private static List<Double> mountainY = new ArrayList<>();
 	private static double width;
 	private static double height;
-	public static WritableImage writableImage;
 
 	public static int getLoops() {
 		return loops;
@@ -27,7 +25,9 @@ public class BiomePlacementManager {
 		gc = graphicsContext;
 		width = gc.getCanvas().getWidth();
 		height = gc.getCanvas().getHeight();
-		writableImage = new WritableImage((int) width, (int) height);
+		mountainX.clear();
+		mountainY.clear();
+		loops = 0;
 	}
 
 	public static void placeBackgroundLayer(Biomes biome) {

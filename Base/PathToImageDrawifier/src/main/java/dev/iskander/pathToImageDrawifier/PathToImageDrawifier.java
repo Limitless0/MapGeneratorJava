@@ -24,6 +24,8 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		this.gc = gc;
 		width = gc.getCanvas().getWidth();
 		height = gc.getCanvas().getHeight();
+		pathList.clear();
+		sps.clear();
 
 	}
 	@Override
