@@ -1,6 +1,7 @@
 module MapGenerator {
-    requires transitive javafx.controls;
-    requires transitive javafx.fxml;
+    requires P2IDrawifier;
+    requires javafx.controls;
+    requires javafx.fxml;
     requires CanvasDrawifier;
     uses dev.iskander.canvasDrawifier.CanvasDrawifier;
 

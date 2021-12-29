@@ -1,6 +1,6 @@
 module CanvasDrawifier {
-	requires transitive javafx.controls;
-	requires transitive javafx.fxml;
+	requires javafx.controls;
+	requires javafx.fxml;
 
 	exports dev.iskander.canvasDrawifier;
 }
