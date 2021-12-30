@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.iskander</groupId>
-    <artifactId>Base</artifactId>
+    <artifactId>base</artifactId>
     <version>0.1</version>
     <packaging>pom</packaging>
 
@@ -33,24 +33,54 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>base/</name>
+                            <build>
+                                <assembly>
+                                    <descriptorRef>artifact-with-dependencies</descriptorRef>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>MapGenerator/dev.iskander.mgj.MapGenerator</mainClass>
-
-                    <jlinkImageName>Executable</jlinkImageName>
+                    <stripDebug>true</stripDebug>
+                    <compress>0</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>MGJGOGOGO</launcher>
+                    <jlinkImageName>Image</jlinkImageName>
+                    <mainClass>MapGenerator/dev.iskander.mgj.Main</mainClass>
+                    <bindServices>true</bindServices>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <modules>
-        <module>MapGenerator</module>
-        <module>CanvasDrawifier</module>
-        <module>PathToImageDrawifier</module>
+        <module>map-generator</module>
+        <module>canvas-drawifier</module>
+        <module>path-to-image-drawifier</module>
     </modules>
 
 </project>

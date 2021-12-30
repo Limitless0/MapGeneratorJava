@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>Base</artifactId>
+    <artifactId>base</artifactId>
     <groupId>dev.iskander</groupId>
     <version>0.1</version>
   </parent>
-  <artifactId>MGJ</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>MapGeneratorJava</name>
+  <artifactId>mgj</artifactId>
+  <version>1.0</version>
+  <name>map-generator</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,8 +31,15 @@
     </dependency>
     <dependency>
       <groupId>dev.iskander</groupId>
-      <artifactId>PathToImageDrawifier</artifactId>
+      <artifactId>canvas-drawifier</artifactId>
       <version>0.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>dev.iskander</groupId>
+      <artifactId>path-to-image-drawifier</artifactId>
+      <version>0.1</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
