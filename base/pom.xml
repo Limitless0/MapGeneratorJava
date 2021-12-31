@@ -14,11 +14,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>17.0.2-ea+1</version> <!-- TODO switch over to main release when it comes out -->
+            <classifier>mac</classifier>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.2-ea+1</version> <!-- TODO switch over to main release when it comes out -->
+            <classifier>mac</classifier>
         </dependency>
     </dependencies>
 
@@ -31,47 +33,6 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>base/</name>
-                            <build>
-                                <assembly>
-                                    <descriptorRef>artifact-with-dependencies</descriptorRef>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
-                <configuration>
-                    <stripDebug>true</stripDebug>
-                    <compress>0</compress>
-                    <noHeaderFiles>true</noHeaderFiles>
-                    <noManPages>true</noManPages>
-                    <launcher>MGJGOGOGO</launcher>
-                    <jlinkImageName>Image</jlinkImageName>
-                    <mainClass>MapGenerator/dev.iskander.mgj.Main</mainClass>
-                    <bindServices>true</bindServices>
                 </configuration>
             </plugin>
         </plugins>

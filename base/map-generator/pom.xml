@@ -33,14 +33,43 @@
       <groupId>dev.iskander</groupId>
       <artifactId>canvas-drawifier</artifactId>
       <version>0.1</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>dev.iskander</groupId>
       <artifactId>path-to-image-drawifier</artifactId>
       <version>0.1</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
+
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.8</version>
+        <configuration>
+          <mainClass>MapGenerator/dev.iskander.mgj.Main</mainClass>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <mainClass>dev.iskander.mgj.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
 
 </project>
