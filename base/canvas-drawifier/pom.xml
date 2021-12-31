@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>canvas-drawifier</artifactId>
+    <version>0.1</version>
     <name>canvas-drawifier</name>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

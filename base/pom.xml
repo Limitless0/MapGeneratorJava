@@ -13,12 +13,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.1</version> <!-- TODO switch over to main release when it comes out -->
+            <version>17.0.2-ea+1</version> <!-- TODO switch over to main release when it comes out -->
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.1</version> <!-- TODO switch over to main release when it comes out -->
+            <version>17.0.2-ea+1</version> <!-- TODO switch over to main release when it comes out -->
         </dependency>
     </dependencies>
 
@@ -31,6 +31,14 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>MapGenerator/dev.iskander.mgj.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

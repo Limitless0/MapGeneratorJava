@@ -12,10 +12,10 @@ import java.util.concurrent.Future;
 public class MapCreator extends Task<Void> {
 
 	static int blobLocations = 2;
-	static int lineLocations = 2;
+	static int lineLocations = 1;
 	static int totalStartLocations = blobLocations + lineLocations;
-	static double size = 300;
-	static double length = 100;
+	static double size = 100;
+	static double length = 300;
 
 	@Override
 	public Void call() {
@@ -115,7 +115,8 @@ public class MapCreator extends Task<Void> {
 		for (Future<Void> future : futures) {
 			try {
 				future.get();
-			} catch (InterruptedException | ExecutionException ignored) {
+			} catch (InterruptedException | ExecutionException exception) {
+				exception.printStackTrace();
 			}
 		}
 	}
