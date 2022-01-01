@@ -1,0 +1,8 @@
+-t msi
+--verbose
+--app-version 1.0
+-n MapGen
+-d out/
+-m MapGenerator/dev.iskander.mgj.Main
+--runtime-image map-generator/target/image
+

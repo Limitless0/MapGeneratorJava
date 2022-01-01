@@ -39,6 +39,9 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>MapGenerator/dev.iskander.mgj.Main</mainClass>
+                    <bindServices>true</bindServices>
+                    <launcher>MapGenLauncher</launcher>
+                    <runtimePathOption>MODULEPATH</runtimePathOption>
                 </configuration>
             </plugin>
         </plugins>
