@@ -1,8 +1,10 @@
 package dev.iskander.mgj;
 
+import dev.iskander.canvasDrawifier.CanvasDrawifier;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.WritableImage;
 import javafx.scene.shape.Path;
@@ -20,6 +22,21 @@ public class AppController {
 
 	@FXML
 	ProgressBar progressBar;
+
+	@FXML
+	ComboBox<CanvasDrawifier> drawifierPicker;
+
+	void initialise() {
+		for (int ii = 0; ii < MapGenerator.canvasDrawifiers.size(); ii++) {
+			drawifierPicker.getItems().add(MapGenerator.canvasDrawifiers.get(ii).get());
+		}
+	}
+
+	@FXML
+	private void setDrawifier() {
+		MapGenerator.canvasDrawifier = drawifierPicker.getValue();
+	}
+
 
 	@FXML
 	void doTheThing() {

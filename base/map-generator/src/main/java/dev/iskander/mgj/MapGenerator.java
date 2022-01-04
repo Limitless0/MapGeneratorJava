@@ -18,8 +18,10 @@ public class MapGenerator extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        System.out.println("Number of drawifiers availible: " + canvasDrawifiers.size());
+        System.out.println("Number of drawifiers available: " + canvasDrawifiers.size());
         scene = new Scene(fxmlLoader.load());
+        AppController controller = fxmlLoader.getController();
+        controller.initialise();
         stage.setTitle("Map Generator");
         stage.setScene(scene);
         stage.show();

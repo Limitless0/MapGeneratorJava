@@ -195,6 +195,9 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		sp.setViewport(new Rectangle2D(0, 0, width, height));
 		pathList.add(path);
 		sps.add(sp);
+	}
 
+	public String toString() {
+		return "Path to Image Drawifier";
 	}
 }

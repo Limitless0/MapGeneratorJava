@@ -33,8 +33,16 @@
 -->
 
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.iskander.mgj.AppController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -42,7 +50,7 @@
                   <Canvas fx:id="canvas" height="342.0" width="641.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
             <Button layoutX="314.0" layoutY="372.0" mnemonicParsing="false" onAction="#doTheThing" text="Button" />
             <ProgressBar fx:id="progressBar" layoutX="55.0" layoutY="375.0" prefWidth="200.0" progress="0.0" />
-            <Button layoutX="454.0" layoutY="373.0" mnemonicParsing="false" onAction="#checkOnTheThing" text="Button" />
+            <ComboBox fx:id="drawifierPicker" layoutX="441.0" layoutY="373.0" prefWidth="150.0" onAction="#setDrawifier"/>
          </children>
     </AnchorPane>
     <MenuBar>

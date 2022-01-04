@@ -15,8 +15,7 @@ public interface CanvasDrawifier {
 
 	void initialise(GraphicsContext gc);
 	void drawFlatLayer(Color color);
-
 	void drawDeliberateLandLayer(Color colour, double startX, double startY, double maxSize);
-
 	void drawLineLandLayer(Color colour, double size, double x, double y, double maxLength);
+	String toString();
 }
