@@ -10,8 +10,8 @@ public class BiomePlacementManager {
 
 	private static GraphicsContext gc;
 	private static final Random random = new Random();
-	private static List<Double> mountainX = new ArrayList<>();
-	private static List<Double> mountainY = new ArrayList<>();
+	private static final List<Double> mountainX = new ArrayList<>();
+	private static final List<Double> mountainY = new ArrayList<>();
 	private static double width;
 	private static double height;
 

@@ -51,6 +51,7 @@
         <module>map-generator</module>
         <module>canvas-drawifier</module>
         <module>path-to-image-drawifier</module>
+        <module>pixel-writer-drawifier</module>
     </modules>
 
 </project>

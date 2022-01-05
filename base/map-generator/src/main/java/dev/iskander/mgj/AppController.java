@@ -61,13 +61,6 @@ public class AppController {
 
 	@FXML
 	void checkOnTheThing() {
-		for (int ii = 0; ii < MapGenerator.canvasDrawifier.pathList.size(); ii++) {
-			Path path = MapGenerator.canvasDrawifier.pathList.get(ii);
-			SnapshotParameters sp = MapGenerator.canvasDrawifier.sps.get(ii);
-			canvas.getGraphicsContext2D().drawImage(path.snapshot(sp,
-							new WritableImage(
-									(int) canvas.getWidth(), (int) canvas.getHeight())),
-					0, 0);
-		}
+		MapGenerator.canvasDrawifier.render();
 	}
 }

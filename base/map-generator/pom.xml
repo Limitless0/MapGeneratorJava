@@ -39,6 +39,11 @@
       <artifactId>path-to-image-drawifier</artifactId>
       <version>0.1</version>
     </dependency>
+    <dependency>
+      <groupId>dev.iskander</groupId>
+      <artifactId>pixel-writer-drawifier</artifactId>
+      <version>0.1</version>
+    </dependency>
   </dependencies>
 
 

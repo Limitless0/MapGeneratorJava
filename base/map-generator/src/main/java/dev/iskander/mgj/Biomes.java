@@ -3,10 +3,10 @@ package dev.iskander.mgj;
 import javafx.scene.paint.Color;
 
 public enum Biomes { //maxSize must be greater than 1 to work correctly with line forming
-	GRASSLAND(Color.LIGHTGREEN, 200),
-	DENSE_WOODLAND(Color.DARKGREEN, 100),
-	SPARSE_WOODLAND(Color.YELLOWGREEN, 40),
-	MOUNTAIN(Color.LIGHTGRAY, 8),
+	GRASSLAND(Color.LIGHTGREEN, 100),
+	DENSE_WOODLAND(Color.DARKGREEN, 70),
+	SPARSE_WOODLAND(Color.YELLOWGREEN, 30),
+	MOUNTAIN(Color.LIGHTGRAY, 4),
 	WATER(Color.BLUE, 2)
 	;
 

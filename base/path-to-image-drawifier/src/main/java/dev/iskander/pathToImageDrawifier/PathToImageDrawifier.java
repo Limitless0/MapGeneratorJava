@@ -4,6 +4,7 @@ import dev.iskander.canvasDrawifier.CanvasDrawifier;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
@@ -15,11 +16,11 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 	private double width;
 	private double height;
 	private GraphicsContext gc;
+	private static final int lines = 5000; // I got sick of looking for it, so I moved it up here
 
 
 	public PathToImageDrawifier() {}
 
-	@Override
 	public void initialise(GraphicsContext gc) {
 		this.gc = gc;
 		width = gc.getCanvas().getWidth();
@@ -28,7 +29,7 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		sps.clear();
 
 	}
-	@Override
+
 	public void drawFlatLayer(Color colour) {
 		Path path = new Path();
 		setUpPath(path, colour);
@@ -39,7 +40,6 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		storePathAndSnapshot(path, sp);
 	}
 
-	@Override
 	public void drawDeliberateLandLayer(Color colour, double startX, double startY, double maxSize) {
 		Path path = new Path();
 		setUpPath(path, colour);
@@ -50,7 +50,6 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		storePathAndSnapshot(path, sp);
 	}
 
-	@Override
 	public void drawLineLandLayer(Color color, double size, double x, double y, double maxLength) {
 		Path path = new Path();
 		setUpPath(path, color);
@@ -73,9 +72,8 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 
 
 	private void drawLandBiome(double startX, double startY, double maxSize, Path path) {
-		//gc.moveTo(startX, startY);
 		path.getElements().add(new MoveTo(startX, startY));
-		for (int ii = 0; ii < 5000; ii++) {
+		for (int ii = 0; ii < lines; ii++) {
 			drawWonkyLine(startX, startY, maxSize, path);
 		}
 	}
@@ -89,7 +87,6 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 			startY = array[1];
 			length = array[2];
 			path.getElements().add(new LineTo(startX, startY));
-			//gc.lineTo(startX, startY);
 		}
 	}
 
@@ -188,13 +185,25 @@ public class PathToImageDrawifier implements CanvasDrawifier {
 		path.maxHeight(height);
 		path.maxWidth(width);
 		path.setStroke(colour);
-		path.setFill(colour);
 	}
 
 	private void storePathAndSnapshot(Path path, SnapshotParameters sp) {
 		sp.setViewport(new Rectangle2D(0, 0, width, height));
 		pathList.add(path);
 		sps.add(sp);
+	}
+
+	public void render() {
+		for (int ii = 0; ii < pathList.size(); ii++) {
+			Path path = pathList.get(ii);
+			SnapshotParameters sp = sps.get(ii);
+			gc.drawImage(path.snapshot(sp,
+							new WritableImage(
+									(int) width, (int) height)),
+					0, 0);
+		}
+		pathList.clear();
+		sps.clear();
 	}
 
 	public String toString() {
